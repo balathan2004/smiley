@@ -1,7 +1,14 @@
+# Ignore faces data
 faces/*
 !faces/.gitkeep
 
+# Ignore embeddings (biometric data)
 dataset/embeddings/*
 !dataset/embeddings/.gitkeep
 
-venv
+# Ignore Python virtual environment
+venv/
+
+# Python junk
+__pycache__/
+*.pyc
