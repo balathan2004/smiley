@@ -1,0 +1,5 @@
+faces/*
+!faces/.gitkeep
+
+dataset/embeddings/*
+!dataset/embeddings/.gitkeep
