@@ -3,3 +3,5 @@ faces/*
 
 dataset/embeddings/*
 !dataset/embeddings/.gitkeep
+
+venv/*
