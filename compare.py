@@ -5,6 +5,10 @@ import cv2
 from insightface.app import FaceAnalysis
 
 
+
+person = "violet"
+
+
 app = FaceAnalysis(providers=['CPUExecutionProvider'])
 app.prepare(ctx_id=0, det_size=(640, 640))
 
@@ -27,7 +31,7 @@ new_emb = faces[0].embedding
 
 
 embeddings = []
-folder = "./dataset/embeddings/person"
+folder = "./dataset/embeddings/"+person
 
 def cosine_similarity(a, b):
     return np.dot(a, b) / (norm(a) * norm(b))

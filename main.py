@@ -4,7 +4,7 @@ import numpy as np
 from insightface.app import FaceAnalysis
 
 
-person = "person"
+person = "violet"
 
 # 🔧 Config
 INPUT_FOLDER = "./faces/" + person

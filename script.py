@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 
-path = Path("./faces/person")
+path = Path("./faces/violet")
 
 images = os.listdir(path)
 
@@ -10,7 +10,7 @@ images.sort()
 for i, filename in enumerate(images, start=1):
     
     
-    new_name = f"img{i}.png"
+    new_name = f"{i}.png"
     
     old_path = os.path.join(path, filename)
     new_path = os.path.join(path, new_name)
