@@ -5,34 +5,23 @@ from numpy.linalg import norm
 import os
 import time
 
+from core.database import load_person_embeddings
+from core.detector import detect_faces
+from core.matcher import is_certain_match
+
 filepath = "./faces/v1.mp4"
 
-
-app = FaceAnalysis()
-app.prepare(ctx_id=0)
 cap = cv2.VideoCapture(filepath)
 
-
-def load_embeddings(folder):
-    embeddings = []
-    for file in os.listdir(folder):
-        if file.endswith(".npy"):
-            emb = np.load(os.path.join(folder, file))
-            embeddings.append(emb)
-
-    if len(embeddings) == 0:
-        return None, None
-
-    mean_emb = np.mean(embeddings, axis=0)
-    return embeddings, mean_emb
+person = "pooja"
 
 
-folder = "./dataset/embeddings/violet"
-embeddings, mean_emb = load_embeddings(folder)
+folder = "./dataset/embeddings/" + person
+embeddings, mean_emb = load_person_embeddings(folder)
 
 
 def get_face_embedding(frame):
-    faces = app.get(frame)
+    faces = detect_faces(frame)
 
     if len(faces) == 0:
         return None
@@ -43,20 +32,6 @@ def get_face_embedding(frame):
 
 def cosine_similarity(a, b):
     return np.dot(a, b) / (norm(a) * norm(b))
-
-
-def is_same_person(new_emb, embeddings, mean_emb, threshold=0.5):
-
-    best_score = max([cosine_similarity(new_emb, e) for e in embeddings])
-    mean_score = cosine_similarity(new_emb, mean_emb)
-
-    # print("Best:", best_score)
-    # print("Mean:", mean_score)
-
-    if best_score > 0.5 and mean_score > 0.45:
-        return True
-    else:
-        return False
 
 
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
@@ -97,7 +72,7 @@ while True:
                 bbox = face.bbox.astype(int)
                 x1, y1, x2, y2 = bbox
 
-                if is_same_person(face.embedding, embeddings, mean_emb):
+                if is_certain_match(person, face.embedding):
                     cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                     print("Same person")
                 else:
